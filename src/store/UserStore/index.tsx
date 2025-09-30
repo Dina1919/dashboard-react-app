@@ -1,20 +1,27 @@
 import { create } from "zustand";
 
 type User = {
-    user : String;
-    role : String;
-}
+  avatar?: string;
+  user: string;
+  role: string;
+};
 
 type UserStore = {
-    user : User | null;
-    login : (userData : User) => void;
-    logout : () => void;
-}
+  user: User | null;
+  login: (userData: User) => void;
+  logout: () => void;
+};
 
 const useUserStore = create<UserStore>((set) => ({
-    user : null,
-    login : (userData) => set({user : userData}),
-    logout: () => set({user : null}),
-}))
+  user: JSON.parse(localStorage.getItem("user") || "null"),
+  login: (userData) => {
+    set({ user: userData });
+    localStorage.setItem("user", JSON.stringify(userData));
+  },
+  logout: () => {
+    set({ user: null });
+    localStorage.removeItem("user");
+  },
+}));
 
 export default useUserStore;

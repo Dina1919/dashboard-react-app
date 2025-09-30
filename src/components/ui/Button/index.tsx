@@ -35,7 +35,7 @@ function Button(props: ButtonProps) {
   return (
     <button
       type={type}
-      className={`${base} ${variants[variant]} ${sizes[size]}`}
+      className={`cursor-pointer ${base} ${variants[variant]} ${sizes[size]}`}
       disabled={disabled}
       onClick={onClick}
     >

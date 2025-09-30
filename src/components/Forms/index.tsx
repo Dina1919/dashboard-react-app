@@ -1,11 +1,64 @@
+import { useState } from "react";
 import Button from "../ui/Button";
+import useUserStore from "../../store/UserStore";
+import { useNavigate } from "react-router";
+import maleAvatar from "../../assets/avatars/male-avatar.png";
+import femaleAvatar from "../../assets/avatars/female-avatar.png";
+
+const users = [
+  {
+    avatar: femaleAvatar,
+    firstname: "دینا",
+    lastname: "فرشادی",
+    username: "d.farshadi",
+    password: "123456",
+    role: "توسعه دهنده فرانت",
+  },
+  {
+    avatar: femaleAvatar,
+    firstname: "فاطمه",
+    lastname: "شرافتی",
+    username: "f.sherafati",
+    password: "abcdef",
+    role: "توسعه دهنده فرانت",
+  },
+  {
+    avatar: maleAvatar,
+    firstname: "محمد",
+    lastname: "نادرخانی",
+    username: "m.naderkhani",
+    password: "123abc",
+    role: "کارشناس نرم افزار",
+  },
+];
 
 function LoginForm() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const login = useUserStore((state) => state.login);
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const user = users.find(
+      (u) => u.username === username && u.password === password
+    );
+    if (user) {
+      login({
+        user: `${user.firstname} ${user.lastname}`,
+        role: user.role,
+        avatar: user.avatar,
+      });
+      navigate("/dashboard");
+    } else {
+      alert("کاربر پیدا نشد");
+    }
+  };
   return (
     <div className="flex flex-col p-4 w-xs m-auto rounded-2xl shadow-lg">
       <div className="flex flex-col justify-center text-center gap-3 p-5">
         <svg
-        className="self-center"
+          className="self-center"
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -19,10 +72,22 @@ function LoginForm() {
         </svg>
         <p>ورود به سیستم</p>
       </div>
-      <form action="" className="flex flex-col gap-4">
-        <input className="outline-0 border border-[#E8E8E8] rounded-md py-1 px-2" type="email" placeholder="نام کاربری..."/>
-        <input className="outline-0 border border-[#E8E8E8] rounded-md py-1 px-2" type="password" placeholder="رمز عبور..." />
-        <Button children="ورود" size="sm" type="submit"/>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <input
+          className="outline-0 border border-[#E8E8E8] rounded-md py-1 px-2"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="نام کاربری..."
+        />
+        <input
+          className="outline-0 border border-[#E8E8E8] rounded-md py-1 px-2"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="رمز عبور..."
+        />
+        <Button children="ورود" size="sm" type="submit" />
       </form>
     </div>
   );
