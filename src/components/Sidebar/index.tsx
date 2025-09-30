@@ -1,6 +1,7 @@
 import { Link, NavLink } from "react-router";
 import Button from "../ui/Button";
 import { useState } from "react";
+import UserProfile from "../UserProfile";
 
 type PropTypes = {};
 
@@ -24,7 +25,7 @@ function Sidebar(props: PropTypes) {
   return (
     <>
       <div
-        className={`${
+        className={`flex flex-col h-screen ${
           collapsed ? "w-16" : "w-64"
         } bg-white text-black shadow transition-all duration-300`}
       >
@@ -60,10 +61,8 @@ function Sidebar(props: PropTypes) {
           </div>
         </div>
         <ul
-          className={`flex flex-col  ${
-            collapsed
-              ? ""
-              : "justify-start px-0"
+          className={`flex flex-col h-screen  ${
+            collapsed ? "" : "justify-start px-0"
           } py-5 text-center gap-4`}
         >
           <li>
@@ -118,6 +117,7 @@ function Sidebar(props: PropTypes) {
             </NavLink>
           </li>
         </ul>
+        <UserProfile collapsed ={collapsed} />
       </div>
     </>
   );
